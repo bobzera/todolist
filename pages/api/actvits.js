@@ -27,4 +27,17 @@ export default async (req, res) =>{
     
   } 
 
+  if (req.method === "DELETE"){
+
+    const {task} = req.body;
+    
+    const { db } = await connectToDatabase();
+    
+    const response = await db.collection('actvits').deleteOne({task});
+    
+    res.status(200).json({ok: "deu certo"})    
+    
+  }
+
+
 }

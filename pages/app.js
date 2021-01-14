@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-// import data from "./data.json";
-
 import ToDoList from "../components/ToDoList";
 import ToDoForm from "../components/ToDoForm";
 
@@ -9,7 +7,6 @@ function App({dataT}) {
   
   
   async function enviar(vaiColocar){
-    console.log(vaiColocar)
     try {
       const res = await fetch('./api/actvits', {
         method: 'post',
@@ -30,25 +27,48 @@ function App({dataT}) {
     }
   }
 
+  async function deletar(vaiDeletar){
+    try {
+      const res = await fetch('./api/actvits', {
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(vaiDeletar) 
+      })
+      
+      if (res.status === 200) {
+        console.log("deletado")
+       
+      } else {
+        alert('Sorry, something went wrong.')
+      }
+    } catch(err) {
+      alert(err)
+    }
+  }
+
   const [toDoList, setToDoList] = useState(dataT);
 
-  const handleToggle = (id) => {    
-    //enviar()
+  const handleToggle = (id) => {   
     let mapped = toDoList.map((task) => {
       return task.id === Number(id)
         ? { ...task, complete: !task.complete }
         : { ...task };
     });
     setToDoList(mapped);
+
+    let vaiDeletar = toDoList.filter((task) => {     
+      return !task.complete;
+    });
+    deletar(...vaiDeletar)    
   };
 
   const handleFilter = () => {
-    let filtered = toDoList.filter((task) => {
-      
+    let filtered = toDoList.filter((task) => {      
       return !task.complete;
     });
-    setToDoList(filtered);
-    
+    setToDoList(filtered);    
   };
 
   const addTask = (userInput) => {
