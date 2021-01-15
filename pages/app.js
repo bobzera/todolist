@@ -56,18 +56,26 @@ function App({dataT}) {
         ? { ...task, complete: !task.complete }
         : { ...task };
     });
-    setToDoList(mapped);
-
-    let vaiDeletar = toDoList.filter((task) => {     
-      return !task.complete;
-    });
-    deletar(...vaiDeletar)    
+    setToDoList(mapped); 
   };
 
   const handleFilter = () => {
+
+
     let filtered = toDoList.filter((task) => {      
       return !task.complete;
     });
+
+    let inverso = toDoList.filter((task) => {      
+      return task.complete;
+    });
+
+    let vaiDeletar = inverso.map((task) => {      
+      return task.task
+    });
+    
+    deletar(vaiDeletar)
+
     setToDoList(filtered);    
   };
 
